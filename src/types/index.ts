@@ -34,6 +34,7 @@ export interface User {
   phone?: string;
   address?: Address;
   wishlist: string[];
+  isVerified: boolean;
   createdAt: string;
   updatedAt: string;
 }

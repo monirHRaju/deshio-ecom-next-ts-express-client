@@ -1,8 +1,10 @@
 "use client";
 
 import { useAuth } from "@/context/AuthContext";
+import api from "@/lib/axios";
 import { cn } from "@/utils/cn";
 import {
+  AlertTriangle,
   LayoutDashboard,
   LogIn,
   LogOut,
@@ -20,6 +22,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 
 const navLinks = [
   { label: "Home", href: "/" },
@@ -36,6 +39,8 @@ export default function Navbar() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [bannerDismissed, setBannerDismissed] = useState(false);
+  const [resending, setResending] = useState(false);
 
   useEffect(() => setMounted(true), []);
 
@@ -50,6 +55,19 @@ export default function Navbar() {
     document.body.style.overflow = drawerOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [drawerOpen]);
+
+  const handleResendVerification = async () => {
+    if (!user?.email) return;
+    setResending(true);
+    try {
+      await api.post("/auth/resend-verification", { email: user.email });
+      toast.success("Verification email sent! Check your inbox.");
+    } catch {
+      toast.error("Could not send email. Please try again.");
+    } finally {
+      setResending(false);
+    }
+  };
 
   const handleLogout = () => {
     logout();
@@ -204,6 +222,34 @@ export default function Navbar() {
           </div>
         </div>
       </header>
+
+      {/* Email verification banner */}
+      {user && !user.isVerified && !bannerDismissed && (
+        <div className="bg-warning/15 border-b border-warning/30 px-4 py-2">
+          <div className="mx-auto flex max-w-7xl items-center justify-between gap-3">
+            <div className="flex items-center gap-2 text-sm text-warning-content">
+              <AlertTriangle className="h-4 w-4 shrink-0 text-warning" />
+              <span>
+                Please verify your email to unlock order placement.
+                <button
+                  onClick={handleResendVerification}
+                  disabled={resending}
+                  className="ml-2 underline font-medium hover:no-underline disabled:opacity-50"
+                >
+                  {resending ? "Sending…" : "Resend email"}
+                </button>
+              </span>
+            </div>
+            <button
+              onClick={() => setBannerDismissed(true)}
+              className="btn btn-ghost btn-xs btn-circle shrink-0"
+              aria-label="Dismiss"
+            >
+              <X className="h-3.5 w-3.5" />
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Mobile Drawer Overlay */}
       <div
