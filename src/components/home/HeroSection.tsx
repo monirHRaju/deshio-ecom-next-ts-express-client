@@ -27,10 +27,7 @@ const slides = [
     ctaLink: "/products",
     secondaryCta: "View Deals",
     secondaryLink: "/products?sort=-discount",
-    bgFrom: "from-sky-50",
-    bgTo: "to-orange-50",
-    darkBgFrom: "dark:from-sky-950/20",
-    darkBgTo: "dark:to-orange-950/10",
+    slideClass: "hero-slide-0",
     Icon: ShoppingBag,
     iconColor: "text-primary",
     badge2: "Free Shipping",
@@ -47,10 +44,7 @@ const slides = [
     ctaLink: "/products",
     secondaryCta: "Best Sellers",
     secondaryLink: "/products?sort=-sold",
-    bgFrom: "from-orange-50",
-    bgTo: "to-sky-50",
-    darkBgFrom: "dark:from-orange-950/20",
-    darkBgTo: "dark:to-sky-950/10",
+    slideClass: "hero-slide-1",
     Icon: Headphones,
     iconColor: "text-secondary",
     badge2: "Up to 40% Off",
@@ -67,10 +61,7 @@ const slides = [
     ctaLink: "/products",
     secondaryCta: "Learn More",
     secondaryLink: "/about",
-    bgFrom: "from-sky-50",
-    bgTo: "to-slate-100",
-    darkBgFrom: "dark:from-sky-950/20",
-    darkBgTo: "dark:to-slate-900/40",
+    slideClass: "hero-slide-2",
     Icon: Cpu,
     iconColor: "text-primary",
     badge2: "Warranty Included",
@@ -93,7 +84,7 @@ export default function HeroSection() {
         {slides.map((slide, idx) => (
           <SwiperSlide key={idx}>
             <div
-              className={`min-h-[90vh] lg:min-h-[80vh] bg-gradient-to-br ${slide.bgFrom} ${slide.bgTo} ${slide.darkBgFrom} ${slide.darkBgTo} flex items-center`}
+              className={`hero-slide ${slide.slideClass} min-h-[90vh] lg:min-h-[80vh] flex items-center transition-colors duration-500`}
             >
               <div className="container mx-auto px-6 lg:px-8 py-16">
                 <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -194,6 +185,17 @@ export default function HeroSection() {
       </Swiper>
 
       <style jsx global>{`
+        /* ── Slide backgrounds: light theme (default) ── */
+        .hero-slide-0 { background-image: linear-gradient(to bottom right, #f0f9ff, #ffffff, #fff7ed); }
+        .hero-slide-1 { background-image: linear-gradient(to bottom right, #fff7ed, #ffffff, #f0f9ff); }
+        .hero-slide-2 { background-image: linear-gradient(to bottom right, #f0f9ff, #ffffff, #f1f5f9); }
+
+        /* ── Slide backgrounds: dark theme via data-theme attribute ── */
+        [data-theme='dark'] .hero-slide-0 { background-image: linear-gradient(to bottom right, oklch(18% 0.04 238), oklch(22% 0.01 240), oklch(18% 0.03 30)); }
+        [data-theme='dark'] .hero-slide-1 { background-image: linear-gradient(to bottom right, oklch(18% 0.03 47), oklch(22% 0.01 240), oklch(18% 0.04 238)); }
+        [data-theme='dark'] .hero-slide-2 { background-image: linear-gradient(to bottom right, oklch(18% 0.04 238), oklch(22% 0.01 240), oklch(20% 0.005 240)); }
+
+        /* ── Swiper pagination ── */
         .hero-swiper .swiper-pagination-bullet {
           background: oklch(60.7% 0.213 238.04);
           opacity: 0.4;
@@ -205,14 +207,18 @@ export default function HeroSection() {
           width: 28px;
           border-radius: 9999px;
         }
+
+        /* ── Swiper nav buttons ── */
         .hero-swiper .swiper-button-next,
         .hero-swiper .swiper-button-prev {
           color: oklch(60.7% 0.213 238.04);
-          background: oklch(100% 0 0 / 0.8);
+          background: var(--color-base-100, white);
+          opacity: 0.9;
           width: 44px;
           height: 44px;
           border-radius: 9999px;
           backdrop-filter: blur(4px);
+          border: 1px solid var(--color-base-200, #e5e7eb);
         }
         .hero-swiper .swiper-button-next::after,
         .hero-swiper .swiper-button-prev::after {
