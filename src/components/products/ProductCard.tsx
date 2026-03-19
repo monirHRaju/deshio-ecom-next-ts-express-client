@@ -4,24 +4,37 @@ import Image from "next/image";
 import Link from "next/link";
 import { Heart, ShoppingCart, Star } from "lucide-react";
 import { useState } from "react";
+import { toast } from "react-hot-toast";
 import { Product } from "@/types";
 import { discountedPrice, formatPrice } from "@/utils/formatPrice";
+import { useCart } from "@/context/CartContext";
 
 interface ProductCardProps {
   product: Product;
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
+  const { addItem, openCart } = useCart();
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
+  const [adding, setAdding] = useState(false);
 
   const finalPrice = discountedPrice(product.price, product.discount);
 
-  const handleAddToCart = (e: React.MouseEvent) => {
+  const handleAddToCart = async (e: React.MouseEvent) => {
     e.preventDefault();
-    setAddedToCart(true);
-    setTimeout(() => setAddedToCart(false), 2000);
-    // TODO F7: integrate with cart mutation
+    if (adding) return;
+    setAdding(true);
+    try {
+      await addItem(product, 1);
+      setAddedToCart(true);
+      openCart();
+      setTimeout(() => setAddedToCart(false), 2000);
+    } catch {
+      toast.error("Failed to add to cart");
+    } finally {
+      setAdding(false);
+    }
   };
 
   const handleWishlist = (e: React.MouseEvent) => {
@@ -41,6 +54,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-500"
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+            unoptimized
           />
 
           {/* Discount badge */}
@@ -117,12 +131,16 @@ export default function ProductCard({ product }: ProductCardProps) {
           {/* Add to Cart */}
           <button
             onClick={handleAddToCart}
-            disabled={product.stock === 0}
+            disabled={product.stock === 0 || adding}
             className={`btn btn-sm w-full mt-2 gap-1.5 transition-all duration-300 ${
               addedToCart ? "btn-success" : "btn-primary"
             }`}
           >
-            <ShoppingCart className="w-3.5 h-3.5" />
+            {adding ? (
+              <span className="loading loading-spinner loading-xs" />
+            ) : (
+              <ShoppingCart className="w-3.5 h-3.5" />
+            )}
             {addedToCart ? "Added!" : "Add to Cart"}
           </button>
         </div>

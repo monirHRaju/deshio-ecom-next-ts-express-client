@@ -1,6 +1,7 @@
 "use client";
 
 import { useAuth } from "@/context/AuthContext";
+import { useCart } from "@/context/CartContext";
 import api from "@/lib/axios";
 import { cn } from "@/utils/cn";
 import {
@@ -35,6 +36,7 @@ export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
   const { user, logout } = useAuth();
+  const { totalItems, openCart } = useCart();
   const { theme, setTheme } = useTheme();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -134,14 +136,18 @@ export default function Navbar() {
             )}
 
             {/* Cart */}
-            <Link
-              href="/cart"
+            <button
+              onClick={openCart}
               className="btn btn-ghost btn-sm btn-circle indicator"
               aria-label="Cart"
             >
               <ShoppingCart className="h-4 w-4" />
-              {/* Badge will be populated in Module F7 */}
-            </Link>
+              {totalItems > 0 && (
+                <span className="badge badge-primary badge-xs indicator-item">
+                  {totalItems > 99 ? "99+" : totalItems}
+                </span>
+              )}
+            </button>
 
             {/* Auth — Desktop */}
             <div className="hidden md:flex items-center gap-2">

@@ -1,6 +1,7 @@
 "use client";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+// useMutation kept for wishlist
 import {
   ArrowLeft,
   CheckCircle2,
@@ -23,6 +24,7 @@ import ImageGallery from "@/components/products/ImageGallery";
 import RelatedProducts from "@/components/products/RelatedProducts";
 import ReviewSection from "@/components/products/ReviewSection";
 import { useAuth } from "@/context/AuthContext";
+import { useCart } from "@/context/CartContext";
 import api from "@/lib/axios";
 import { Category, Product } from "@/types";
 import { cn } from "@/utils/cn";
@@ -56,6 +58,7 @@ export default function ProductDetailPage() {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
   const { user } = useAuth();
+  const { addItem, openCart } = useCart();
   const qc = useQueryClient();
 
   const [qty, setQty] = useState(1);
@@ -79,16 +82,21 @@ export default function ProductDetailPage() {
     }
   });
 
-  // Add to cart mutation
-  const { mutate: addToCart, isPending: cartLoading } = useMutation({
-    mutationFn: () =>
-      api.post("/cart", { productId: product!._id, quantity: qty }),
-    onSuccess: () => {
-      toast.success(`${product!.title} added to cart!`);
-      qc.invalidateQueries({ queryKey: ["cart"] });
-    },
-    onError: (err: any) => toast.error(err?.response?.data?.message || "Failed to add to cart"),
-  });
+  // Add to cart
+  const [cartLoading, setCartLoading] = useState(false);
+  const handleAddToCart = async () => {
+    if (!product) return;
+    setCartLoading(true);
+    try {
+      await addItem(product, qty);
+      toast.success(`${product.title} added to cart!`);
+      openCart();
+    } catch {
+      toast.error("Failed to add to cart");
+    } finally {
+      setCartLoading(false);
+    }
+  };
 
   // Wishlist toggle mutation
   const { mutate: toggleWishlist, isPending: wishlistLoading } = useMutation({
@@ -258,10 +266,7 @@ export default function ProductDetailPage() {
 
               <div className="flex gap-3">
                 <button
-                  onClick={() => {
-                    if (!user) { router.push("/login"); return; }
-                    addToCart();
-                  }}
+                  onClick={handleAddToCart}
                   disabled={stockStatus === "out" || cartLoading}
                   className="btn btn-primary flex-1 gap-2"
                 >

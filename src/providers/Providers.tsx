@@ -1,6 +1,8 @@
 "use client";
 
 import { AuthProvider } from "@/context/AuthContext";
+import { CartProvider } from "@/context/CartContext";
+import CartSidebar from "@/components/cart/CartSidebar";
 import { queryClient } from "@/lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -12,19 +14,22 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider attribute="data-theme" defaultTheme="light" enableSystem={false}>
         <AuthProvider>
-          {children}
-          <Toaster
-            position="top-right"
-            toastOptions={{
-              duration: 3000,
-              style: {
-                borderRadius: "8px",
-                fontSize: "14px",
-              },
-              success: { iconTheme: { primary: "#0EA5E9", secondary: "#fff" } },
-              error: { iconTheme: { primary: "#ef4444", secondary: "#fff" } },
-            }}
-          />
+          <CartProvider>
+            <CartSidebar />
+            {children}
+            <Toaster
+              position="top-right"
+              toastOptions={{
+                duration: 3000,
+                style: {
+                  borderRadius: "8px",
+                  fontSize: "14px",
+                },
+                success: { iconTheme: { primary: "#0EA5E9", secondary: "#fff" } },
+                error: { iconTheme: { primary: "#ef4444", secondary: "#fff" } },
+              }}
+            />
+          </CartProvider>
         </AuthProvider>
       </ThemeProvider>
       <ReactQueryDevtools initialIsOpen={false} />
