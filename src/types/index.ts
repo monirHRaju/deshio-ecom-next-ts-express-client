@@ -54,11 +54,6 @@ export interface Category {
 
 // ─── Product ─────────────────────────────────────────────────────────────────
 
-export interface ProductSpec {
-  key: string;
-  value: string;
-}
-
 export interface Product {
   _id: string;
   title: string;
@@ -74,7 +69,7 @@ export interface Product {
   sold: number;
   tags: string[];
   isFeatured: boolean;
-  specs: ProductSpec[];
+  specifications?: Record<string, string>;
   createdBy?: string | User;
   createdAt: string;
   updatedAt: string;
