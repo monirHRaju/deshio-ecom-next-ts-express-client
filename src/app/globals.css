@@ -41,6 +41,22 @@ body {
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
 }
 
+/* ── Page hero gradient — light / dark aware ────────────────────────────── */
+/* Used on About, Contact, Blog hero sections.                               */
+/* DaisyUI sets data-theme on <html>, so Tailwind's dark: prefix won't fire. */
+/* We use [data-theme='dark'] parent selectors here instead.                 */
+.page-hero-bg {
+  background-image: linear-gradient(to bottom right, #f0f9ff, #ffffff, #fff7ed);
+}
+[data-theme='dark'] .page-hero-bg {
+  background-image: linear-gradient(
+    to bottom right,
+    oklch(18% 0.04 238),
+    oklch(22% 0.01 240),
+    oklch(18% 0.03 30)
+  );
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 6px;

@@ -1,4 +1,17 @@
+import type { Metadata } from "next";
 import HeroSection from "@/components/home/HeroSection";
+
+export const metadata: Metadata = {
+  title: "Deshio — Modern Electronics Store",
+  description:
+    "Discover the latest electronics, gadgets, and tech accessories at unbeatable prices. Free delivery on orders over $50.",
+  openGraph: {
+    title: "Deshio — Modern Electronics Store",
+    description:
+      "Shop 5,000+ genuine electronics products. Fast shipping, easy returns, best prices.",
+    type: "website",
+  },
+};
 import CategorySection from "@/components/home/CategorySection";
 import FeaturedProducts from "@/components/home/FeaturedProducts";
 import FlashSale from "@/components/home/FlashSale";
