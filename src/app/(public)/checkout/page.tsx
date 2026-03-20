@@ -36,8 +36,8 @@ const schema = z.object({
   country: z.string().min(2, "Country is required"),
   zip: z.string().min(3, "ZIP / Postal code is required"),
   deliveryZoneId: z.string().min(1, "Please select a delivery option"),
-  paymentMethod: z.enum(["cash_on_delivery", "credit_card", "paypal"], {
-    required_error: "Select a payment method",
+  paymentMethod: z.enum(["cash_on_delivery", "credit_card", "paypal"] as const, {
+    error: "Select a payment method",
   }),
   orderNote: z.string().max(300).optional(),
 });
