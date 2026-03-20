@@ -88,6 +88,26 @@ export interface Review {
   updatedAt: string;
 }
 
+// ─── Delivery Zone ────────────────────────────────────────────────────────────
+
+export interface DeliveryZone {
+  _id: string;
+  name: string;
+  charge: number;
+  estimatedDays: string;
+  isActive: boolean;
+}
+
+// ─── Coupon ───────────────────────────────────────────────────────────────────
+
+export interface AppliedCoupon {
+  code: string;
+  description?: string;
+  type: "percent" | "fixed";
+  value: number;
+  discount: number;
+}
+
 // ─── Cart ────────────────────────────────────────────────────────────────────
 
 export interface CartItem {
@@ -133,6 +153,10 @@ export interface Order {
   paymentMethod: string;
   paymentStatus: PaymentStatus;
   orderStatus: OrderStatus;
+  couponCode?: string;
+  couponDiscount?: number;
+  deliveryCharge?: number;
+  orderNote?: string;
   createdAt: string;
   updatedAt: string;
 }

@@ -8,6 +8,8 @@ import { toast } from "react-hot-toast";
 import { Product } from "@/types";
 import { discountedPrice, formatPrice } from "@/utils/formatPrice";
 import { useCart } from "@/context/CartContext";
+import { useAuth } from "@/context/AuthContext";
+import api from "@/lib/axios";
 
 interface ProductCardProps {
   product: Product;
@@ -15,9 +17,13 @@ interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
   const { addItem, openCart } = useCart();
-  const [isWishlisted, setIsWishlisted] = useState(false);
+  const { user, updateUser } = useAuth();
+  const [isWishlisted, setIsWishlisted] = useState(
+    () => user?.wishlist?.includes(product._id) ?? false
+  );
   const [addedToCart, setAddedToCart] = useState(false);
   const [adding, setAdding] = useState(false);
+  const [wishlistLoading, setWishlistLoading] = useState(false);
 
   const finalPrice = discountedPrice(product.price, product.discount);
 
@@ -37,10 +43,21 @@ export default function ProductCard({ product }: ProductCardProps) {
     }
   };
 
-  const handleWishlist = (e: React.MouseEvent) => {
+  const handleWishlist = async (e: React.MouseEvent) => {
     e.preventDefault();
-    setIsWishlisted((prev) => !prev);
-    // TODO F8: integrate with wishlist API
+    if (wishlistLoading) return;
+    if (!user) { toast.error("Please login to save to wishlist"); return; }
+    setWishlistLoading(true);
+    try {
+      const res = await api.post(`/products/${product._id}/wishlist`);
+      const added = res.data.message?.toLowerCase().includes("added");
+      setIsWishlisted(added);
+      updateUser({ ...user, wishlist: res.data.data.wishlist ?? [] });
+    } catch {
+      toast.error("Failed to update wishlist");
+    } finally {
+      setWishlistLoading(false);
+    }
   };
 
   return (
@@ -67,15 +84,17 @@ export default function ProductCard({ product }: ProductCardProps) {
           {/* Wishlist button */}
           <button
             onClick={handleWishlist}
+            disabled={wishlistLoading}
             className={`absolute top-2 right-2 btn btn-circle btn-xs opacity-0 group-hover:opacity-100 transition-all duration-200 ${
               isWishlisted
                 ? "btn-error text-white"
                 : "btn-ghost bg-base-100/80 backdrop-blur-sm"
             }`}
           >
-            <Heart
-              className={`w-3.5 h-3.5 ${isWishlisted ? "fill-current" : ""}`}
-            />
+            {wishlistLoading
+              ? <span className="loading loading-spinner loading-xs" />
+              : <Heart className={`w-3.5 h-3.5 ${isWishlisted ? "fill-current" : ""}`} />
+            }
           </button>
 
           {/* Out of stock overlay */}

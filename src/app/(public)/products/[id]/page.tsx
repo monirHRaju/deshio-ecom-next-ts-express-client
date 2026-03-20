@@ -57,7 +57,7 @@ type Tab = "description" | "specs" | "reviews";
 export default function ProductDetailPage() {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, updateUser } = useAuth();
   const { addItem, openCart } = useCart();
   const qc = useQueryClient();
 
@@ -105,7 +105,10 @@ export default function ProductDetailPage() {
       const added = res.data.message?.toLowerCase().includes("added");
       setWishlisted(added);
       toast.success(res.data.message);
-      qc.invalidateQueries({ queryKey: ["me"] });
+      // Update AuthContext so wishlist badge + dashboard page stay in sync
+      if (user) {
+        updateUser({ ...user, wishlist: res.data.data.wishlist ?? [] });
+      }
     },
     onError: (err: any) => toast.error(err?.response?.data?.message || "Failed to update wishlist"),
   });

@@ -9,6 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import {
   AlertTriangle,
   ChevronDown,
+  Heart,
   LayoutDashboard,
   LogIn,
   LogOut,
@@ -365,6 +366,22 @@ export default function Navbar() {
               >
                 {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
               </button>
+            )}
+
+            {/* Wishlist — only for logged-in users */}
+            {user && (
+              <Link
+                href="/dashboard/wishlist"
+                className="btn btn-ghost btn-sm btn-circle indicator"
+                aria-label="Wishlist"
+              >
+                <Heart className="h-4 w-4" />
+                {user.wishlist?.length > 0 && (
+                  <span className="badge badge-secondary badge-xs indicator-item">
+                    {user.wishlist.length > 99 ? "99+" : user.wishlist.length}
+                  </span>
+                )}
+              </Link>
             )}
 
             {/* Cart */}
