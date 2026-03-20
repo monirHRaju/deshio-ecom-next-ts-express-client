@@ -17,6 +17,7 @@ import { useState } from "react";
 const quickLinks = [
   { label: "Home", href: "/" },
   { label: "Products", href: "/products" },
+  { label: "Track Order", href: "/track-order" },
   { label: "About Us", href: "/about" },
   { label: "Contact", href: "/contact" },
   { label: "Blog", href: "/blog" },

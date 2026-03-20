@@ -2,15 +2,16 @@
 
 import { useAuth } from "@/context/AuthContext";
 import { cn } from "@/utils/cn";
-import { Heart, LayoutDashboard, Package, User } from "lucide-react";
+import { Heart, LayoutDashboard, MessageSquare, Package, User } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 const sidebarLinks = [
-  { href: "/dashboard/profile", label: "Profile", icon: User },
-  { href: "/dashboard/orders", label: "My Orders", icon: Package },
-  { href: "/dashboard/wishlist", label: "Wishlist", icon: Heart },
+  { href: "/dashboard/profile",  label: "Profile",    icon: User },
+  { href: "/dashboard/orders",   label: "My Orders",  icon: Package },
+  { href: "/dashboard/reviews",  label: "My Reviews", icon: MessageSquare },
+  { href: "/dashboard/wishlist", label: "Wishlist",   icon: Heart },
 ];
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
