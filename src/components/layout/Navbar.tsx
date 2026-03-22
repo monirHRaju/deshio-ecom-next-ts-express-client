@@ -134,7 +134,7 @@ function SearchBox() {
       return res.data.data ?? [];
     },
     enabled: debouncedQuery.length >= 2,
-    staleTime: 30_000,
+    staleTime: 0,
   });
 
   // Close on outside click

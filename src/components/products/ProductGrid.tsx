@@ -32,7 +32,8 @@ export default function ProductGrid({ params, onPageChange }: Props) {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["products", params],
     queryFn: () => fetchProducts(params),
-    staleTime: 30_000,
+    // No caching when a search term is active — always fetch fresh results
+    staleTime: params.search ? 0 : 30_000,
   });
 
   // Skeleton
