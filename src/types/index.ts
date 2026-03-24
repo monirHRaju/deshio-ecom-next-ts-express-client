@@ -157,8 +157,27 @@ export interface Order {
   couponDiscount?: number;
   deliveryCharge?: number;
   orderNote?: string;
+  mobilePayment?: {
+    paymentMethodId?: string;
+    paymentMethodName?: string;
+    mobileLast4?: string;
+    transactionId?: string;
+  };
   createdAt: string;
   updatedAt: string;
+}
+
+// ─── Payment Method ──────────────────────────────────────────────────────────
+
+export interface PaymentMethod {
+  _id: string;
+  name: string;
+  type: string;
+  instructions: string;
+  phoneNumber?: string;
+  qrImage?: string;
+  isActive: boolean;
+  sortOrder: number;
 }
 
 // ─── API Response ────────────────────────────────────────────────────────────

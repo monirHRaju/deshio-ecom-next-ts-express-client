@@ -4,7 +4,7 @@ import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import api from "@/lib/axios";
 import { formatPrice } from "@/utils/formatPrice";
-import { AppliedCoupon, DeliveryZone } from "@/types";
+import { AppliedCoupon, DeliveryZone, PaymentMethod } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -16,6 +16,7 @@ import {
   MapPin,
   Package,
   ShoppingBag,
+  Smartphone,
   Tag,
   Truck,
   X,
@@ -30,17 +31,37 @@ import { z } from "zod";
 
 // ─── Schema ───────────────────────────────────────────────────────────────────
 
-const schema = z.object({
-  street: z.string().min(5, "Street address is required"),
-  city: z.string().min(2, "City is required"),
-  country: z.string().min(2, "Country is required"),
-  zip: z.string().min(3, "ZIP / Postal code is required"),
-  deliveryZoneId: z.string().min(1, "Please select a delivery option"),
-  paymentMethod: z.enum(["cash_on_delivery", "credit_card", "paypal"] as const, {
-    error: "Select a payment method",
-  }),
-  orderNote: z.string().max(300).optional(),
-});
+const schema = z
+  .object({
+    street: z.string().min(5, "Street address is required"),
+    city: z.string().min(2, "City is required"),
+    country: z.string().min(2, "Country is required"),
+    zip: z.string().min(3, "ZIP / Postal code is required"),
+    deliveryZoneId: z.string().min(1, "Please select a delivery option"),
+    paymentMethod: z.enum(["cash_on_delivery", "credit_card", "mobile_banking"] as const, {
+      error: "Select a payment method",
+    }),
+    orderNote: z.string().max(300).optional(),
+    // Mobile banking fields
+    selectedPaymentMethodId: z.string().optional(),
+    mobileLast4: z.string().optional(),
+    transactionId: z.string().optional(),
+  })
+  .refine(
+    (d) =>
+      d.paymentMethod !== "mobile_banking" || (d.selectedPaymentMethodId && d.selectedPaymentMethodId.length > 0),
+    { message: "Please select a payment method", path: ["selectedPaymentMethodId"] }
+  )
+  .refine(
+    (d) =>
+      d.paymentMethod !== "mobile_banking" || (d.mobileLast4 && /^\d{4}$/.test(d.mobileLast4)),
+    { message: "Enter the last 4 digits of your mobile number", path: ["mobileLast4"] }
+  )
+  .refine(
+    (d) =>
+      d.paymentMethod !== "mobile_banking" || (d.transactionId && d.transactionId.trim().length > 0),
+    { message: "Transaction ID is required", path: ["transactionId"] }
+  );
 
 type FormValues = z.infer<typeof schema>;
 
@@ -86,6 +107,15 @@ export default function CheckoutPage() {
   const [couponError, setCouponError] = useState("");
   const [validatingCoupon, setValidatingCoupon] = useState(false);
 
+  const { data: mobileMethods = [] } = useQuery<PaymentMethod[]>({
+    queryKey: ["payment-methods"],
+    queryFn: async () => {
+      const res = await api.get("/payment-methods");
+      return res.data.data ?? [];
+    },
+    staleTime: 5 * 60_000,
+  });
+
   const { data: deliveryZones = [] } = useQuery<DeliveryZone[]>({
     queryKey: ["delivery-zones"],
     queryFn: async () => {
@@ -99,6 +129,7 @@ export default function CheckoutPage() {
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
@@ -110,8 +141,15 @@ export default function CheckoutPage() {
       paymentMethod: "cash_on_delivery",
       deliveryZoneId: "",
       orderNote: "",
+      selectedPaymentMethodId: "",
+      mobileLast4: "",
+      transactionId: "",
     },
   });
+
+  const selectedPaymentMethod = watch("paymentMethod");
+  const selectedMobileMethodId = watch("selectedPaymentMethodId");
+  const selectedMobileMethod = mobileMethods.find((m) => m._id === selectedMobileMethodId);
 
   const selectedZoneId = watch("deliveryZoneId");
   const selectedZone = deliveryZones.find((z) => z._id === selectedZoneId);
@@ -160,13 +198,21 @@ export default function CheckoutPage() {
     }
     setPlacing(true);
     try {
-      const res = await api.post("/orders", {
+      const payload: Record<string, unknown> = {
         shippingAddress: { street: data.street, city: data.city, country: data.country, zip: data.zip },
         paymentMethod: data.paymentMethod,
         deliveryZoneId: data.deliveryZoneId,
         couponCode: appliedCoupon?.code,
         orderNote: data.orderNote || undefined,
-      });
+      };
+      if (data.paymentMethod === "mobile_banking") {
+        payload.mobilePayment = {
+          paymentMethodId: data.selectedPaymentMethodId,
+          mobileLast4: data.mobileLast4,
+          transactionId: data.transactionId,
+        };
+      }
+      const res = await api.post("/orders", payload);
       clearCart();
       setOrderNumber(res.data.data.orderNumber);
       toast.success("Order placed successfully!");
@@ -316,14 +362,27 @@ export default function CheckoutPage() {
                 {[
                   { value: "cash_on_delivery", label: "Cash on Delivery", sub: "Pay when your order arrives", icon: "💵" },
                   { value: "credit_card", label: "Credit / Debit Card", sub: "Visa, Mastercard, Amex (demo)", icon: "💳" },
-                  { value: "paypal", label: "PayPal", sub: "Pay with your PayPal account (demo)", icon: "🅿️" },
+                  { value: "mobile_banking", label: "Mobile Banking", sub: "bKash, Rocket, Nagad", icon: <Smartphone className="w-5 h-5" /> },
                 ].map(({ value, label, sub, icon }) => (
                   <label
                     key={value}
                     className="flex items-center gap-4 cursor-pointer p-3.5 rounded-xl border border-base-300 hover:border-primary/50 hover:bg-primary/5 transition-colors has-[:checked]:border-primary has-[:checked]:bg-primary/5"
                   >
-                    <input {...register("paymentMethod")} type="radio" value={value} className="radio radio-primary radio-sm" />
-                    <span className="text-xl">{icon}</span>
+                    <input
+                      {...register("paymentMethod")}
+                      type="radio"
+                      value={value}
+                      className="radio radio-primary radio-sm"
+                      onChange={(e) => {
+                        setValue("paymentMethod", e.target.value as FormValues["paymentMethod"]);
+                        if (e.target.value !== "mobile_banking") {
+                          setValue("selectedPaymentMethodId", "");
+                          setValue("mobileLast4", "");
+                          setValue("transactionId", "");
+                        }
+                      }}
+                    />
+                    <span className="text-xl">{typeof icon === "string" ? icon : icon}</span>
                     <div>
                       <p className="font-semibold text-sm">{label}</p>
                       <p className="text-xs text-base-content/50">{sub}</p>
@@ -332,6 +391,104 @@ export default function CheckoutPage() {
                 ))}
               </div>
               {errors.paymentMethod && <p className="text-error text-xs">{errors.paymentMethod.message}</p>}
+
+              {/* Mobile Banking Details */}
+              {selectedPaymentMethod === "mobile_banking" && (
+                <div className="mt-4 space-y-4 rounded-xl border border-primary/20 bg-primary/5 p-4">
+                  {/* Select method */}
+                  <div className="form-control">
+                    <label className="label pb-1">
+                      <span className="label-text font-medium">Select Payment Method</span>
+                    </label>
+                    {mobileMethods.length === 0 ? (
+                      <p className="text-sm text-base-content/40 italic">No payment methods available</p>
+                    ) : (
+                      <select
+                        {...register("selectedPaymentMethodId")}
+                        className={`select select-bordered w-full ${errors.selectedPaymentMethodId ? "select-error" : ""}`}
+                      >
+                        <option value="">Choose one…</option>
+                        {mobileMethods.map((m) => (
+                          <option key={m._id} value={m._id}>
+                            {m.name}
+                          </option>
+                        ))}
+                      </select>
+                    )}
+                    {errors.selectedPaymentMethodId && (
+                      <p className="text-error text-xs mt-1">{errors.selectedPaymentMethodId.message}</p>
+                    )}
+                  </div>
+
+                  {/* Instructions + QR */}
+                  {selectedMobileMethod && (
+                    <div className="space-y-3 rounded-lg bg-base-100 border border-base-300 p-4">
+                      <div className="flex items-center justify-between">
+                        <h3 className="font-bold text-sm">{selectedMobileMethod.name}</h3>
+                        <span className="text-lg font-black text-primary">{formatPrice(grandTotal)}</span>
+                      </div>
+
+                      {selectedMobileMethod.phoneNumber && (
+                        <p className="text-sm">
+                          Send money to: <span className="font-bold text-primary">{selectedMobileMethod.phoneNumber}</span>
+                        </p>
+                      )}
+
+                      {selectedMobileMethod.qrImage && (
+                        <div className="flex justify-center">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={selectedMobileMethod.qrImage}
+                            alt="Payment QR Code"
+                            className="w-40 h-40 object-contain rounded-lg border border-base-300"
+                          />
+                        </div>
+                      )}
+
+                      <div className="text-sm text-base-content/70 whitespace-pre-line leading-relaxed">
+                        {selectedMobileMethod.instructions}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Last 4 digits + TrxID */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="form-control">
+                      <label className="label pb-1">
+                        <span className="label-text font-medium">Last 4 Digits</span>
+                      </label>
+                      <input
+                        {...register("mobileLast4")}
+                        type="text"
+                        maxLength={4}
+                        placeholder="e.g. 3378"
+                        className={`input input-bordered w-full ${errors.mobileLast4 ? "input-error" : ""}`}
+                        onInput={(e) => {
+                          const el = e.target as HTMLInputElement;
+                          el.value = el.value.replace(/\D/g, "").slice(0, 4);
+                        }}
+                      />
+                      {errors.mobileLast4 && (
+                        <p className="text-error text-xs mt-1">{errors.mobileLast4.message}</p>
+                      )}
+                    </div>
+                    <div className="form-control">
+                      <label className="label pb-1">
+                        <span className="label-text font-medium">Transaction ID (TrxID)</span>
+                      </label>
+                      <input
+                        {...register("transactionId")}
+                        type="text"
+                        placeholder="e.g. TXN1234ABCD"
+                        className={`input input-bordered w-full ${errors.transactionId ? "input-error" : ""}`}
+                      />
+                      {errors.transactionId && (
+                        <p className="text-error text-xs mt-1">{errors.transactionId.message}</p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
             </section>
 
             {/* Order Note */}
