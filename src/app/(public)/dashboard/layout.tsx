@@ -2,10 +2,12 @@
 
 import { useAuth } from "@/context/AuthContext";
 import { cn } from "@/utils/cn";
-import { Heart, LayoutDashboard, MessageSquare, Package, User } from "lucide-react";
+import { ExternalLink, Heart, LayoutDashboard, MessageSquare, Package, User } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
+
+const ADMIN_URL = process.env.NEXT_PUBLIC_ADMIN_URL || "";
 
 const sidebarLinks = [
   { href: "/dashboard/profile",  label: "Profile",    icon: User },
@@ -70,19 +72,17 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             </Link>
           ))}
 
-          {user.role === "admin" && (
-            <Link
-              href="/dashboard/admin"
-              className={cn(
-                "flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-medium transition-colors",
-                pathname.startsWith("/dashboard/admin")
-                  ? "bg-primary/10 text-primary"
-                  : "text-base-content/60 hover:bg-base-200 hover:text-base-content"
-              )}
+          {user.role === "admin" && ADMIN_URL && (
+            <a
+              href={ADMIN_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-medium transition-colors text-base-content/60 hover:bg-base-200 hover:text-base-content"
             >
               <LayoutDashboard className="h-4 w-4 shrink-0" />
               Admin Panel
-            </Link>
+              <ExternalLink className="h-3 w-3 ml-auto opacity-50" />
+            </a>
           )}
         </aside>
 

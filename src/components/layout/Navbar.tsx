@@ -30,6 +30,8 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 
+const ADMIN_URL = process.env.NEXT_PUBLIC_ADMIN_URL || "";
+
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 interface SubCategory {
@@ -417,8 +419,8 @@ export default function Navbar() {
                     <div className="divider my-1" />
                     <li><Link href="/dashboard/profile"><User className="h-4 w-4" /> Profile</Link></li>
                     <li><Link href="/dashboard/orders"><Package className="h-4 w-4" /> My Orders</Link></li>
-                    {user.role === "admin" && (
-                      <li><Link href="/dashboard/admin"><LayoutDashboard className="h-4 w-4" /> Admin Panel</Link></li>
+                    {user.role === "admin" && ADMIN_URL && (
+                      <li><a href={ADMIN_URL} target="_blank" rel="noopener noreferrer"><LayoutDashboard className="h-4 w-4" /> Admin Panel</a></li>
                     )}
                     <div className="divider my-1" />
                     <li><button onClick={handleLogout} className="text-error"><LogOut className="h-4 w-4" /> Logout</button></li>
@@ -566,10 +568,10 @@ export default function Navbar() {
                 <Link href="/dashboard/orders" onClick={() => setDrawerOpen(false)} className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-base-content/70 hover:bg-base-200 transition-colors">
                   <Package className="h-4 w-4" /> My Orders
                 </Link>
-                {user.role === "admin" && (
-                  <Link href="/dashboard/admin" onClick={() => setDrawerOpen(false)} className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-base-content/70 hover:bg-base-200 transition-colors">
+                {user.role === "admin" && ADMIN_URL && (
+                  <a href={ADMIN_URL} target="_blank" rel="noopener noreferrer" onClick={() => setDrawerOpen(false)} className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-base-content/70 hover:bg-base-200 transition-colors">
                     <LayoutDashboard className="h-4 w-4" /> Admin Panel
-                  </Link>
+                  </a>
                 )}
               </>
             )}
