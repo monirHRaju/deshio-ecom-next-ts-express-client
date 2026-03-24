@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Eye, EyeOff, Loader2, LogIn, ShieldCheck, User } from "lucide-react";
+import { Eye, EyeOff, Loader2, LogIn, User, ShieldCheck } from "lucide-react";
 import { toast } from "react-hot-toast";
 import api from "@/lib/axios";
 import { useAuth } from "@/context/AuthContext";
@@ -21,7 +21,7 @@ const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001/api/v
 
 const DEMO = [
   { label: "Admin Demo", icon: ShieldCheck, email: "admin@example.com", password: "123456", color: "btn-secondary" },
-  { label: "User Demo", icon: User, email: "user@example.com", password: "123456", color: "btn-outline btn-primary" },
+  { label: "User Demo", icon: User, email: "user@example.com", password: "123456", color: "btn-primary" },
 ];
 
 export default function LoginPage() {
