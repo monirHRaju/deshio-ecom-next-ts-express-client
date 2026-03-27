@@ -5,7 +5,7 @@ const features = [
     Icon: Truck,
     title: "Fast & Free Delivery",
     description:
-      "Get your orders delivered in 1-3 business days. Free shipping on all orders over $50.",
+      "Get your orders delivered in 1-3 business days. Free shipping on all orders over ৳50.",
     stat: "24h",
     statLabel: "Express available",
     bg: "from-sky-500/10 to-sky-600/5",

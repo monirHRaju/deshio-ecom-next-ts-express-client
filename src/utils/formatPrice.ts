@@ -1,5 +1,5 @@
-export const formatPrice = (price: number, currency = "USD"): string => {
-  return new Intl.NumberFormat("en-US", {
+export const formatPrice = (price: number, currency = "BDT"): string => {
+  return new Intl.NumberFormat("bn-BD", {
     style: "currency",
     currency,
     minimumFractionDigits: 0,

@@ -3,7 +3,7 @@ import { HelpCircle } from "lucide-react";
 const faqs = [
   {
     q: "How long does shipping take?",
-    a: "Standard shipping takes 3-5 business days. Express shipping (1-2 business days) is available at checkout. Free standard shipping on all orders over $50.",
+    a: "Standard shipping takes 3-5 business days. Express shipping (1-2 business days) is available at checkout. Free standard shipping on all orders over ৳50.",
   },
   {
     q: "What payment methods do you accept?",

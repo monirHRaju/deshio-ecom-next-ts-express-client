@@ -56,7 +56,7 @@ const slides = [
     title: "Smart Devices,",
     highlight: "Smarter Living",
     subtitle:
-      "Transform your home with the latest smart technology. Free delivery on orders over $50.",
+      "Transform your home with the latest smart technology. Free delivery on orders over ৳50.",
     cta: "Shop Smart",
     ctaLink: "/products",
     secondaryCta: "Learn More",

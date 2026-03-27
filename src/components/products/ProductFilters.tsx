@@ -15,10 +15,10 @@ interface Props {
 }
 
 const PRICE_PRESETS = [
-  { label: "Under $100", min: 0, max: 100 },
-  { label: "$100 – $500", min: 100, max: 500 },
-  { label: "$500 – $1000", min: 500, max: 1000 },
-  { label: "Over $1000", min: 1000, max: undefined },
+  { label: "Under ৳100", min: 0, max: 100 },
+  { label: "৳100 – ৳500", min: 100, max: 500 },
+  { label: "৳500 – ৳1000", min: 500, max: 1000 },
+  { label: "Over ৳1000", min: 1000, max: undefined },
 ];
 
 function FiltersContent({ filters, onChange, onClear }: Omit<Props, "isOpen" | "onClose">) {

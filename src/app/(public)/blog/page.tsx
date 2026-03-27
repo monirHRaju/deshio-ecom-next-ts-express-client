@@ -45,7 +45,7 @@ const articles: Article[] = [
     slug: "budget-laptop-guide-2025",
     category: "Buying Guide",
     categoryColor: "badge-primary",
-    title: "Best Budget Laptops Under $500 That Don't Feel Cheap",
+    title: "Best Budget Laptops Under ৳500 That Don't Feel Cheap",
     excerpt:
       "You don't have to spend a fortune to get a reliable, fast laptop. These five picks deliver premium feel at half the price of the competition.",
     author: "Priya Nair",

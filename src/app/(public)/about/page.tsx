@@ -127,7 +127,7 @@ const milestones = [
   { year: "2019", event: "Deshio founded in a small garage with 50 products" },
   { year: "2020", event: "Expanded to 1,000 SKUs and launched mobile-first website" },
   { year: "2021", event: "Crossed 10,000 customers and partnered with 30 brands" },
-  { year: "2022", event: "Opened first fulfilment centre and hit $1M revenue" },
+  { year: "2022", event: "Opened first fulfilment centre and hit ৳1M revenue" },
   { year: "2023", event: "Launched international shipping to 50+ countries" },
   { year: "2024", event: "50,000+ happy customers and 5,000+ products and counting" },
 ];

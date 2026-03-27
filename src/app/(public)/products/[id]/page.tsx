@@ -307,7 +307,7 @@ export default function ProductDetailPage() {
             {/* Trust badges — card row */}
             <div className="grid grid-cols-3 gap-3 pt-1">
               {[
-                { icon: Truck, label: "Free Shipping", sub: "Orders over $50" },
+                { icon: Truck, label: "Free Shipping", sub: "Orders over ৳50" },
                 { icon: ShieldCheck, label: "Secure Payment", sub: "256-bit SSL" },
                 { icon: Package, label: "Easy Returns", sub: "30-day policy" },
               ].map(({ icon: Icon, label, sub }) => (

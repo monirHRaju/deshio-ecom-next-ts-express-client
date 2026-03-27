@@ -4,7 +4,7 @@ import HeroSection from "@/components/home/HeroSection";
 export const metadata: Metadata = {
   title: "Deshio — Modern Electronics Store",
   description:
-    "Discover the latest electronics, gadgets, and tech accessories at unbeatable prices. Free delivery on orders over $50.",
+    "Discover the latest electronics, gadgets, and tech accessories at unbeatable prices. Free delivery on orders over ৳50.",
   openGraph: {
     title: "Deshio — Modern Electronics Store",
     description:

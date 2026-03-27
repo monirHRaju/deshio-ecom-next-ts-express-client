@@ -182,7 +182,7 @@ function ProductsContent() {
           {(filters.priceMin !== undefined || filters.priceMax !== undefined) && (
             <div className="flex items-center gap-1 badge badge-outline gap-1.5">
               <span className="text-xs">
-                ${filters.priceMin ?? 0} – {filters.priceMax ? `$${filters.priceMax}` : "∞"}
+                ৳{filters.priceMin ?? 0} – {filters.priceMax ? `৳${filters.priceMax}` : "∞"}
               </span>
               <button onClick={() => handleFilterChange({ priceMin: undefined, priceMax: undefined })}>
                 <X className="w-3 h-3" />
