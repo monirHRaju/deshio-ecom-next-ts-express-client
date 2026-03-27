@@ -17,7 +17,6 @@ import {
   Moon,
   Package,
   Search,
-  ShoppingBag,
   ShoppingCart,
   Sun,
   User,
@@ -347,12 +346,8 @@ export default function Navbar() {
         {/* ── Row 1: Logo + Search + Actions ─────────────────────────────── */}
         <div className="mx-auto flex h-16 max-w-7xl items-center gap-3 px-4 sm:px-6 lg:px-8">
           {/* Logo */}
-          <Link
-            href="/"
-            className="flex shrink-0 items-center gap-2 text-xl font-black text-primary"
-          >
-            <ShoppingBag className="h-6 w-6" strokeWidth={2.5} />
-            <span className="tracking-tight hidden sm:block">Deshio</span>
+          <Link href="/" className="shrink-0">
+            <img src="/deshio_logo.svg" alt="Deshio" className="h-10" />
           </Link>
 
           {/* Search */}
@@ -531,8 +526,8 @@ export default function Navbar() {
 
         <div className={cn("absolute right-0 top-0 h-full w-72 bg-base-100 shadow-2xl transition-transform duration-300 ease-out flex flex-col", drawerOpen ? "translate-x-0" : "translate-x-full")}>
           <div className="flex items-center justify-between border-b border-base-300 px-5 py-4">
-            <Link href="/" onClick={() => setDrawerOpen(false)} className="flex items-center gap-2 text-lg font-bold text-primary">
-              <ShoppingBag className="h-5 w-5" strokeWidth={2.5} /> Deshio
+            <Link href="/" onClick={() => setDrawerOpen(false)}>
+              <img src="/deshio_logo.svg" alt="Deshio" className="h-8" />
             </Link>
             <button onClick={() => setDrawerOpen(false)} className="btn btn-ghost btn-sm btn-circle">
               <X className="h-5 w-5" />

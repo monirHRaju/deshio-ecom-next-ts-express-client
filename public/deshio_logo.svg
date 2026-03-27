@@ -1,0 +1,45 @@
+<svg width="100%" viewBox="0 0 680 420" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    
+  <mask id="imagine-text-gaps-8salnd" maskUnits="userSpaceOnUse"><rect x="0" y="0" width="680" height="420" fill="white"/><rect x="258.2820739746094" y="266.8885803222656" width="163.4358673095703" height="64.44482421875" fill="black" rx="2"/><rect x="225.27056884765625" y="332.6110534667969" width="229.4588623046875" height="17.222305297851562" fill="black" rx="2"/></mask></defs>
+
+  <!-- Card background -->
+  <rect x="140" y="40" width="400" height="340" rx="24" style="fill:rgb(26, 26, 46);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- D lettermark icon block -->
+  <!-- Outer shape: bold rounded square -->
+  <rect x="245" y="80" width="190" height="190" rx="32" fill="#E63946" style="fill:rgb(230, 57, 70);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Subtle inner shadow for depth -->
+  <rect x="248" y="83" width="184" height="184" rx="30" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" style="fill:none;stroke:rgba(255, 255, 255, 0.12);color:rgb(255, 255, 255);stroke-width:1.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- The D letter - bold, geometric, white -->
+  <!-- Left vertical stroke of D -->
+  <rect x="282" y="112" width="22" height="126" rx="6" fill="white" style="fill:rgb(255, 255, 255);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Top horizontal bar -->
+  <rect x="282" y="112" width="72" height="22" rx="6" fill="white" style="fill:rgb(255, 255, 255);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Bottom horizontal bar -->
+  <rect x="282" y="216" width="72" height="22" rx="6" fill="white" style="fill:rgb(255, 255, 255);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Right curved part of D as arc -->
+  <path d="M348 112 Q412 112 412 175 Q412 238 348 238" fill="none" stroke="white" stroke-width="22" stroke-linecap="round" style="fill:none;stroke:rgb(255, 255, 255);color:rgb(255, 255, 255);stroke-width:22px;stroke-linecap:round;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Small accent dot — brand detail bottom-right of icon -->
+  <circle cx="404" cy="242" r="8" fill="#FFD166" style="fill:rgb(255, 209, 102);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Brand name text -->
+  <text x="340" y="318" text-anchor="middle" font-family="'Sora','Trebuchet MS',sans-serif" font-weight="800" font-size="42" letter-spacing="-1" fill="#1a1a2e" style="fill:rgb(245, 240, 232);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:Sora, &quot;Trebuchet MS&quot;, sans-serif;font-size:52px;font-weight:800;text-anchor:middle;dominant-baseline:auto">
+    <tspan style="fill:rgb(245, 240, 232);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:Sora, &quot;Trebuchet MS&quot;, sans-serif;font-size:52px;font-weight:800;text-anchor:middle;dominant-baseline:auto">Deshio</tspan>
+  </text>
+
+  <!-- Tagline -->
+  <text x="340" y="345" text-anchor="middle" fill="#7a6a55" font-family="'Sora','Trebuchet MS',sans-serif" font-weight="700" font-size="9.5" letter-spacing="4" style="fill:rgb(176, 160, 144);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:Sora, &quot;Trebuchet MS&quot;, sans-serif;font-size:11px;font-weight:700;text-anchor:middle;dominant-baseline:auto">SHOP LOCAL · GO GLOBAL</text>
+
+  <!-- Thin divider line between name and tagline -->
+  <line x1="280" y1="328" x2="400" y2="328" stroke="#E63946" stroke-width="1.5" stroke-linecap="round" opacity="0.5" mask="url(#imagine-text-gaps-8salnd)" style="fill:rgb(0, 0, 0);stroke:rgb(230, 57, 70);color:rgb(255, 255, 255);stroke-width:1.5px;stroke-linecap:round;stroke-linejoin:miter;opacity:0.5;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+</svg>

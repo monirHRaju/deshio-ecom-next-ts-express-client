@@ -21,6 +21,7 @@ export const metadata: Metadata = {
   description:
     "Discover the latest electronics, gadgets, and tech accessories at unbeatable prices.",
   keywords: ["electronics", "gadgets", "smartphones", "laptops", "ecommerce"],
+  icons: { icon: "/deshio_logo_icon.ico" },
   openGraph: {
     title: "Deshio — Modern Electronics Store",
     description: "Discover the latest electronics at unbeatable prices.",

@@ -37,6 +37,7 @@ const schema = z
     city: z.string().min(2, "City is required"),
     country: z.string().min(2, "Country is required"),
     zip: z.string().min(3, "ZIP / Postal code is required"),
+    phone: z.string().min(11, "Enter a valid mobile number").max(15),
     deliveryZoneId: z.string().min(1, "Please select a delivery option"),
     paymentMethod: z.enum(["cash_on_delivery", "credit_card", "mobile_banking"] as const, {
       error: "Select a payment method",
@@ -138,6 +139,7 @@ export default function CheckoutPage() {
       city: user?.address?.city ?? "",
       country: user?.address?.country ?? "",
       zip: user?.address?.zip ?? "",
+      phone: user?.phone ?? "",
       paymentMethod: "cash_on_delivery",
       deliveryZoneId: "",
       orderNote: "",
@@ -200,6 +202,7 @@ export default function CheckoutPage() {
     try {
       const payload: Record<string, unknown> = {
         shippingAddress: { street: data.street, city: data.city, country: data.country, zip: data.zip },
+        phone: data.phone,
         paymentMethod: data.paymentMethod,
         deliveryZoneId: data.deliveryZoneId,
         couponCode: appliedCoupon?.code,
@@ -276,10 +279,17 @@ export default function CheckoutPage() {
                     {errors.country && <p className="text-error text-xs mt-1">{errors.country.message}</p>}
                   </div>
                 </div>
-                <div className="form-control w-full sm:w-1/2">
-                  <label className="label pb-1"><span className="label-text font-medium">ZIP / Area Code</span></label>
-                  <input {...register("zip")} placeholder="1000" className={`input input-bordered w-full ${errors.zip ? "input-error" : ""}`} />
-                  {errors.zip && <p className="text-error text-xs mt-1">{errors.zip.message}</p>}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="form-control">
+                    <label className="label pb-1"><span className="label-text font-medium">ZIP / Area Code</span></label>
+                    <input {...register("zip")} placeholder="1000" className={`input input-bordered w-full ${errors.zip ? "input-error" : ""}`} />
+                    {errors.zip && <p className="text-error text-xs mt-1">{errors.zip.message}</p>}
+                  </div>
+                  <div className="form-control">
+                    <label className="label pb-1"><span className="label-text font-medium">Mobile Number <span className="text-error">*</span></span></label>
+                    <input {...register("phone")} type="tel" placeholder="01XXXXXXXXX" className={`input input-bordered w-full ${errors.phone ? "input-error" : ""}`} />
+                    {errors.phone && <p className="text-error text-xs mt-1">{errors.phone.message}</p>}
+                  </div>
                 </div>
               </div>
             </section>

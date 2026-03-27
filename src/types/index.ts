@@ -150,6 +150,7 @@ export interface Order {
   items: OrderItem[];
   totalAmount: number;
   shippingAddress: Address;
+  phone: string;
   paymentMethod: string;
   paymentStatus: PaymentStatus;
   orderStatus: OrderStatus;

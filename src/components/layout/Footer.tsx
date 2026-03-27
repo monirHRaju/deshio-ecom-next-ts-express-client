@@ -8,7 +8,6 @@ import {
   MapPin,
   Phone,
   Send,
-  ShoppingBag,
   Twitter,
 } from "lucide-react";
 import Link from "next/link";
@@ -57,12 +56,8 @@ export default function Footer() {
         <div className="grid grid-cols-1 gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
           {/* Brand */}
           <div className="space-y-4">
-            <Link
-              href="/"
-              className="flex items-center gap-2 text-xl font-bold text-primary"
-            >
-              <ShoppingBag className="h-6 w-6" strokeWidth={2.5} />
-              <span className="tracking-tight">Deshio</span>
+            <Link href="/">
+              <img src="/deshio_logo.svg" alt="Deshio" className="h-25" />
             </Link>
             <p className="text-sm leading-relaxed text-base-content/60">
               Your one-stop destination for the latest electronics and tech
